@@ -9,15 +9,18 @@ module jk_ff_example_tb;
 
   initial begin
     clk=1'b0;
+    $monitor(" [Cycle: %3d] [Q value: %d]", $time, Q);
     $dumpfile("jk_ff_example.vcd");
     $dumpvars();
   end
 
   always begin
     //0,1,2,3,4,5,6,7,8,9,0,1,2,3,4,5,0,1,2,3,9,0,1,2,3,4,5,6,7,8
+    $display("Starting simulation");
     r0 = 1'b1; r9 = 1'b0; #3 ;r0 = 1'b0; r9 = 1'b0; #157; 
     r0 = 1'b1; r9 = 1'b0; #3 ;r0 = 1'b0; r9 = 1'b0; #37;
     r0 = 1'b0; r9 = 1'b1; #3; r0 = 1'b0; r9 = 1'b0; #97;
+    $display("End simulation");
     $finish;
   end
 
