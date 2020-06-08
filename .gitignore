@@ -1,1 +1,3 @@
 build
+scripts/create_project.tcl
+*.sdc

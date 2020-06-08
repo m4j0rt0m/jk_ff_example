@@ -5,7 +5,7 @@
  * -------------------------------------------------------------
  * | Preset | Clear | CLK | J | K | Output         | Qo  | ~Qo |
  * -------------------------------------------------------------
- * | 0      | 0     | x   | x | x | Invalid        | 1   | 0*  |
+ * | 0      | 0     | x   | x | x | Invalid        | 1*  | 0*  |
  * | 0      | 1     | x   | x | x | Preset         | 1   | 0   |
  * | 1      | 0     | x   | x | x | Clear          | 0   | 1   |
  * | 1      | 1     | x   | x | x | No change      | Qo  | ~Qo |
@@ -31,20 +31,20 @@ module jk_ff (/*AUTOARG*/
   reg q = 0;
 
   //..jk ff w/ preset and clear logic
-  always @ (*) begin
+  always @ (negedge preset_i, negedge clear_i, negedge clk_i) begin
     case({preset_i, clear_i})
-      2'b00: q = 0; //..invalid
-      2'b01: q = 1; //..preset
-      2'b10: q = 0; //..clear
+      2'b00: q <= 0; //..invalid
+      2'b01: q <= 1; //..preset
+      2'b10: q <= 0; //..clear
       2'b11: begin
         if(clk_i) //..no change
-          q = q;
+          q <= q;
         else begin
           case({j_i, k_i})
-            2'b00: q = q;  //..no change
-            2'b01: q = 0;  //..reset
-            2'b10: q = 1;  //..set
-            2'b11: q = ~q; //..toggle
+            2'b00: q <= q;  //..no change
+            2'b01: q <= 0;  //..reset
+            2'b10: q <= 1;  //..set
+            2'b11: q <= ~q; //..toggle
           endcase
         end
       end
